@@ -1,133 +1,40 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Recall</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Recall</title>
 <style>
-:root{--p:#5b5bd6;--bg:#f7f8fc;--line:#e4e7ef;--muted:#737987}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#202331}.app{max-width:950px;margin:auto;padding:28px 18px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}.logo{font-size:30px;font-weight:850}.logo span{color:var(--p)}.muted{color:var(--muted)}.card{background:white;border:1px solid var(--line);border-radius:20px;padding:20px;margin:14px 0;box-shadow:0 4px 18px #2221}.create{border:2px dashed #cfd3df;text-align:center;padding:55px 20px}.plus{font-size:45px;color:var(--p)}button{border:0;border-radius:12px;padding:11px 15px;font-weight:750;cursor:pointer}.primary{background:var(--p);color:white}.ghost{background:white;border:1px solid var(--line)}input{width:100%;padding:12px;border:1px solid #d9dce6;border-radius:12px;font:inherit;margin:8px 0 14px}.word{display:block;padding:12px 0;border-bottom:1px solid #eee}.word input{width:auto;margin-right:8px}.group{cursor:pointer}.row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}.learnWrap{max-width:680px;margin:25px auto}.flash{min-height:330px;text-align:center;display:flex;align-items:center;justify-content:center;cursor:pointer}.flashWord{font-size:42px;font-weight:850}.ipa{font-size:18px;color:var(--muted);margin-top:8px}.speakBtn{font-size:22px;padding:8px 10px;margin-left:6px;vertical-align:middle}.counter{text-align:center;color:var(--muted);margin:12px 0}.center{justify-content:center}.meaning{font-size:22px;line-height:1.5}.example{font-size:17px;color:#5f6570;margin-top:18px}
-</style>
-</head>
-<body>
-<div class="app">
-  <div class="top"><div class="logo">Re<span>call</span></div><div class="muted">Vocabulary memory trainer</div></div>
-  <main id="main">
-    <div class="card create">
-      <div class="plus">＋</div>
-      <h1>Create New Group</h1>
-      <p class="muted">Choose words for your first group.</p>
-      <button class="primary" id="createBtn">Create New Group</button>
-    </div>
-  </main>
-</div>
+:root{--p:#5b5bd6;--bg:#f7f8fc;--line:#e4e7ef;--muted:#737987;--soft:#efefff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#202331}.app{max-width:1000px;margin:auto;padding:28px 18px 60px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}.logo{font-size:30px;font-weight:850;cursor:pointer}.logo span{color:var(--p)}.muted{color:var(--muted)}.small{font-size:12px;color:var(--muted)}.card{background:white;border:1px solid var(--line);border-radius:20px;padding:20px;margin:14px 0;box-shadow:0 4px 18px #2221}.create{border:2px dashed #cfd3df;text-align:center;padding:48px 20px;cursor:pointer}.plus{font-size:45px;color:var(--p)}button{border:0;border-radius:12px;padding:11px 15px;font-weight:750;cursor:pointer;font:inherit}.primary{background:var(--p);color:white}.ghost{background:white;border:1px solid var(--line)}input,select{width:100%;padding:12px;border:1px solid #d9dce6;border-radius:12px;font:inherit}.row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}.groups{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.group{cursor:pointer}.toolbar{display:grid;grid-template-columns:1fr 150px;gap:10px;margin:14px 0}.library{border:1px solid var(--line);border-radius:15px;padding:0 13px;min-height:110px}.wordrow{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start;padding:13px 0;border-bottom:1px solid #eee}.wordrow:last-child{border-bottom:0}.wordcheck{width:20px;height:20px;margin-top:4px}.level{font-size:11px;font-weight:800;padding:5px 8px;background:var(--soft);color:#4848a8;border-radius:999px}.pager{display:flex;justify-content:center;gap:10px;align-items:center;margin:14px 0}.speakBtn{font-size:18px;padding:6px 8px}.learnWrap{max-width:680px;margin:25px auto}.flash{min-height:330px;text-align:center;display:flex;align-items:center;justify-content:center;cursor:pointer}.flashWord{font-size:42px;font-weight:850}.ipa{font-size:18px;color:var(--muted);margin-top:8px}.counter{text-align:center;color:var(--muted);margin:12px 0}.center{justify-content:center}.meaning{font-size:22px;line-height:1.5}.example{font-size:17px;color:#5f6570;margin-top:18px}.notice{padding:12px;border-radius:12px;background:#f5f5ff;color:#4b4b8d;margin:10px 0}.details{margin-top:6px;color:#626976;font-size:13px}.selectedCount{font-weight:800;color:var(--p)}
+@media(max-width:720px){.groups{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr}.wordrow{grid-template-columns:auto 1fr}.level{grid-column:2}}
+</style></head><body><div class="app"><div class="top"><div class="logo" id="logo">Re<span>call</span></div><div class="muted">Vocabulary memory trainer</div></div><main id="main"><div class="card create"><div class="plus">＋</div><h1>Create New Group</h1><p class="muted">Choose words for your first group.</p><button class="primary" id="createBtn">Create New Group</button></div></main></div>
 <script>
-const LIB = [
-  ['reluctant','/rɪˈlʌktənt/','Not willing or eager to do something; hesitant.','She was reluctant to discuss what happened.'],
-  ['acknowledge','/əkˈnɑːlɪdʒ/','To accept, admit, or recognize that something is true or exists.','He acknowledged that the project took longer than expected.'],
-  ['subtle','/ˈsʌtəl/','Not obvious or easy to notice.','There was a subtle change in her tone.'],
-  ['inevitable','/ɪnˈevɪtəbəl/','Certain to happen and impossible to avoid.','Some delays were inevitable.'],
-  ['convey','/kənˈveɪ/','To communicate or express an idea, feeling, or message.','Her expression conveyed disappointment.'],
-  ['ambiguous','/æmˈbɪɡjuəs/','Having more than one possible meaning; unclear.','The instructions were deliberately ambiguous.'],
-  ['coherent','/koʊˈhɪrənt/','Logical, clear, and consistent.','She gave a coherent explanation.'],
-  ['deteriorate','/dɪˈtɪriəreɪt/','To become progressively worse.','The weather began to deteriorate.'],
-  ['elaborate','/ɪˈlæbərət/','Detailed and complicated in design or planning.','They prepared an elaborate presentation.'],
-  ['feasible','/ˈfiːzəbəl/','Possible and practical to do successfully.','The committee decided the plan was feasible.'],
-  ['inherent','/ɪnˈhɪrənt/','Existing as a natural or basic part of something.','Risk is inherent in the process.'],
-  ['scrutinize','/ˈskruːtənaɪz/','To examine something very carefully.','The accountant scrutinized the records.']
+const WORDS_URL='https://raw.githubusercontent.com/nalgeon/words/main/data/oxford-5k.csv';
+const DICT_URL='https://api.dictionaryapi.dev/api/v2/entries/en/';
+const SAMPLE=[
+ {word:'reluctant',level:'B2',pos:'adjective',audio:'',phonetic:'/rɪˈlʌktənt/',definition:'Not willing or eager to do something; hesitant.',example:'She was reluctant to discuss what happened.'},
+ {word:'acknowledge',level:'B2',pos:'verb',audio:'',phonetic:'/əkˈnɑːlɪdʒ/',definition:'To accept, admit, or recognize that something is true or exists.',example:'He acknowledged that the project took longer than expected.'},
+ {word:'subtle',level:'B2',pos:'adjective',audio:'',phonetic:'/ˈsʌtəl/',definition:'Not obvious or easy to notice.',example:'There was a subtle change in her tone.'},
+ {word:'inevitable',level:'B2',pos:'adjective',audio:'',phonetic:'/ɪnˈevɪtəbəl/',definition:'Certain to happen and impossible to avoid.',example:'Some delays were inevitable.'},
+ {word:'convey',level:'B2',pos:'verb',audio:'',phonetic:'/kənˈveɪ/',definition:'To communicate or express an idea, feeling, or message.',example:'Her expression conveyed disappointment.'},
+ {word:'ambiguous',level:'C1',pos:'adjective',audio:'',phonetic:'/æmˈbɪɡjuəs/',definition:'Having more than one possible meaning; unclear.',example:'The instructions were deliberately ambiguous.'},
+ {word:'coherent',level:'C1',pos:'adjective',audio:'',phonetic:'/koʊˈhɪrənt/',definition:'Logical, clear, and consistent.',example:'She gave a coherent explanation.'},
+ {word:'deteriorate',level:'C1',pos:'verb',audio:'',phonetic:'/dɪˈtɪriəreɪt/',definition:'To become progressively worse.',example:'The weather began to deteriorate.'}
 ];
-
-const main = document.getElementById('main');
-let groups = [];
-let currentGroupIndex = null;
-let learnIndex = 0;
-let learnFlipped = false;
-try { groups = JSON.parse(localStorage.getItem('recall_groups') || '[]'); }
-catch (e) { groups = []; }
-
-function save(){ localStorage.setItem('recall_groups', JSON.stringify(groups)); }
-function wordData(word){ return LIB.find(function(x){ return x[0] === word; }); }
-function speakWord(word, event){
-  if(event) event.stopPropagation();
-  if(!('speechSynthesis' in window)){ alert('Pronunciation playback is not supported in this browser.'); return; }
-  window.speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(word);
-  u.lang = 'en-US';
-  u.rate = 0.82;
-  window.speechSynthesis.speak(u);
-}
-
-function renderHome(){
-  currentGroupIndex = null;
-  if(!groups.length){
-    main.innerHTML = '<div class="card create"><div class="plus">＋</div><h1>Create New Group</h1><p class="muted">Choose words for your first group.</p><button class="primary" id="createBtn">Create New Group</button></div>';
-    document.getElementById('createBtn').addEventListener('click', renderCreate);
-    return;
-  }
-  let html = '<h1>Your groups</h1><p class="muted">Choose a group or create a new one.</p>';
-  groups.forEach(function(g, i){ html += '<div class="card group" data-i="'+i+'"><h2>'+g.name+'</h2><p>'+g.words.length+' words</p></div>'; });
-  html += '<div class="card create"><div class="plus">＋</div><h2>Create New Group</h2><button class="primary" id="createBtn">Create New Group</button></div>';
-  main.innerHTML = html;
-  document.getElementById('createBtn').addEventListener('click', renderCreate);
-  document.querySelectorAll('.group').forEach(function(el){ el.addEventListener('click', function(){ renderGroup(Number(el.dataset.i)); }); });
-}
-
-function renderCreate(){
-  let html = '<div class="row"><h1>Create New Group</h1><button class="ghost" id="homeBtn">← Home</button></div><div class="card"><label>Group name</label><input id="groupName" placeholder="September Week 1"><h3>＋ Choose words</h3>';
-  LIB.forEach(function(w, i){ html += '<label class="word"><input type="checkbox" value="'+i+'"><b>'+w[0]+'</b> '+w[1]+'<br><span class="muted">'+w[2]+'</span></label>'; });
-  html += '<button class="primary" id="saveGroup">Create Group</button></div>';
-  main.innerHTML = html;
-  document.getElementById('homeBtn').addEventListener('click', renderHome);
-  document.getElementById('saveGroup').addEventListener('click', function(){
-    const name = document.getElementById('groupName').value.trim();
-    const chosen = Array.from(document.querySelectorAll('.word input:checked')).map(function(x){ return LIB[Number(x.value)][0]; });
-    if(!name || !chosen.length){ alert('Please name the group and choose at least one word.'); return; }
-    groups.push({name:name, words:chosen.map(function(w){return {word:w,status:'active',score:0};})});
-    save(); renderHome();
-  });
-}
-
-function renderGroup(i){
-  currentGroupIndex = i;
-  const g = groups[i];
-  let html = '<div class="row"><div><h1>'+g.name+'</h1><p class="muted">'+g.words.length+' words</p></div><button class="ghost" id="homeBtn">← Groups</button></div><div class="card"><button class="primary" id="learnBtn">Learn words</button> <button class="primary" disabled>Test my knowledge</button><p class="muted">Learning mode is active. The full test engine will be restored next.</p></div>';
-  g.words.forEach(function(item){ const w=wordData(item.word); html += '<div class="card"><b>'+item.word+'</b> '+(w?w[1]:'')+' <button class="ghost speakBtn" data-word="'+item.word+'" title="Hear pronunciation">🔊</button><p class="muted">'+(w?w[2]:'')+'</p></div>'; });
-  main.innerHTML = html;
-  document.getElementById('homeBtn').addEventListener('click', renderHome);
-  document.getElementById('learnBtn').addEventListener('click', startLearn);
-  document.querySelectorAll('.speakBtn').forEach(function(btn){ btn.addEventListener('click', function(e){ speakWord(btn.dataset.word, e); }); });
-}
-
-function startLearn(){
-  learnIndex = 0;
-  learnFlipped = false;
-  renderLearn();
-}
-
-function renderLearn(){
-  const g = groups[currentGroupIndex];
-  const active = g.words.filter(function(x){ return x.status !== 'mastered'; });
-  if(!active.length){ alert('There are no Active words in this group.'); renderGroup(currentGroupIndex); return; }
-  if(learnIndex >= active.length) learnIndex = 0;
-  const item = active[learnIndex];
-  const w = wordData(item.word);
-  let card;
-  if(!learnFlipped){
-    card = '<div><div><span class="flashWord">'+w[0]+'</span><button class="ghost speakBtn" id="learnSpeak" title="Hear pronunciation">🔊</button></div><div class="ipa">'+w[1]+'</div><p class="muted">Tap the card to flip</p></div>';
-  } else {
-    card = '<div><div class="meaning">'+w[2]+'</div><div class="example">'+w[3]+'</div><p class="muted">Tap the card to see the word again</p></div>';
-  }
-  main.innerHTML = '<div class="learnWrap"><div class="row"><h2>Learn words</h2><button class="ghost" id="backGroup">← Group</button></div><div class="card flash" id="flashCard">'+card+'</div><div class="counter">'+(learnIndex+1)+' of '+active.length+'</div><div class="row center"><button class="ghost" id="prevWord">← Previous</button><button class="primary" id="nextWord">Next →</button></div></div>';
-  document.getElementById('backGroup').addEventListener('click', function(){ renderGroup(currentGroupIndex); });
-  document.getElementById('flashCard').addEventListener('click', function(){ learnFlipped = !learnFlipped; renderLearn(); });
-  const sp = document.getElementById('learnSpeak');
-  if(sp) sp.addEventListener('click', function(e){ speakWord(w[0], e); });
-  document.getElementById('prevWord').addEventListener('click', function(){ learnIndex = (learnIndex - 1 + active.length) % active.length; learnFlipped = false; renderLearn(); });
-  document.getElementById('nextWord').addEventListener('click', function(){ learnIndex = (learnIndex + 1) % active.length; learnFlipped = false; renderLearn(); });
-}
-
-document.getElementById('createBtn').addEventListener('click', renderCreate);
-if(groups.length) renderHome();
-</script>
-</body>
-</html>
+const main=document.getElementById('main');
+let groups=[], vocabulary=[], detailsCache={};let currentGroupIndex=null,learnIndex=0,learnFlipped=false;
+try{groups=JSON.parse(localStorage.getItem('recall_groups')||'[]')}catch(e){groups=[]}
+try{detailsCache=JSON.parse(localStorage.getItem('recall_details')||'{}')}catch(e){detailsCache={}}
+function save(){localStorage.setItem('recall_groups',JSON.stringify(groups));localStorage.setItem('recall_details',JSON.stringify(detailsCache))}
+function esc(s){return String(s||'').replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]||c})}
+function usedWords(){const s=new Set();groups.forEach(function(g){g.words.forEach(function(x){s.add(x.word.toLowerCase())})});return s}
+function speakWord(word,audio,event){if(event)event.stopPropagation();if(audio){const a=new Audio(audio);a.play().catch(function(){speech(word)});return}speech(word)}
+function speech(word){if(!('speechSynthesis' in window)){alert('Pronunciation playback is not supported in this browser.');return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(word);u.lang='en-US';u.rate=.82;speechSynthesis.speak(u)}
+function renderHome(){currentGroupIndex=null;if(!groups.length){main.innerHTML='<div class="card create" id="newGroup"><div class="plus">＋</div><h1>Create New Group</h1><p class="muted">Choose words for your first group.</p></div>';document.getElementById('newGroup').onclick=renderCreate;return}let h='<h1>Your groups</h1><p class="muted">Choose a group or create a new one.</p><div class="groups">';groups.forEach(function(g,i){h+='<div class="card group" data-i="'+i+'"><h2>'+esc(g.name)+'</h2><p class="muted">'+g.words.length+' words</p></div>'});h+='<div class="card create" id="newGroup"><div class="plus">＋</div><h2>Create New Group</h2></div></div>';main.innerHTML=h;document.getElementById('newGroup').onclick=renderCreate;document.querySelectorAll('.group').forEach(function(el){el.onclick=function(){renderGroup(Number(el.dataset.i))}})}
+function parseCSV(text){const lines=text.split(/\r?\n/);const out=[],seen=new Set();for(let i=1;i<lines.length;i++){if(!lines[i])continue;const c=lines[i].split(',');if(c.length<5)continue;const word=(c[0]||'').trim(),level=(c[1]||'').trim().toUpperCase(),pos=(c[2]||'').trim(),audio=(c[4]||'').trim();if(!word||!['B2','C1'].includes(level))continue;const key=word.toLowerCase();if(seen.has(key))continue;seen.add(key);out.push({word:word,level:level,pos:pos,audio:audio})}return out}
+function loadVocabulary(onDone){if(vocabulary.length){onDone();return}fetch(WORDS_URL).then(function(r){if(!r.ok)throw new Error('load');return r.text()}).then(function(t){vocabulary=parseCSV(t);if(!vocabulary.length)throw new Error('empty');onDone()}).catch(function(){vocabulary=SAMPLE.map(function(x){return {word:x.word,level:x.level,pos:x.pos,audio:x.audio}});onDone(true)})}
+function renderCreate(){main.innerHTML='<div class="row"><div><h1>Create New Group</h1><p class="muted">Words already used in another group will not appear here.</p></div><button class="ghost" id="homeBtn">← Home</button></div><div class="card"><label>Group name</label><input id="groupName" placeholder="Example: September Week 1"><div id="loadState" class="notice">Loading the B2–C1 vocabulary library…</div><div id="picker" style="display:none"><div class="toolbar"><input id="search" placeholder="Search all available words…"><select id="level"><option value="ALL">B2 + C1</option><option value="B2">B2</option><option value="C1">C1</option></select></div><div><span class="selectedCount" id="selectedCount">0 selected</span> <span class="small">· choose as many as you want</span></div><div class="library" id="library"></div><div class="pager"><button class="ghost" id="prev">← Previous</button><span class="small" id="pageInfo"></span><button class="ghost" id="next">Next →</button></div><button class="primary" id="saveGroup">Create Group</button></div></div>';document.getElementById('homeBtn').onclick=renderHome;loadVocabulary(function(fallback){setupPicker(fallback)})}
+function setupPicker(fallback){const used=usedWords();const available=vocabulary.filter(function(x){return !used.has(x.word.toLowerCase())});const selected=new Set();let page=0;const pageSize=30;document.getElementById('picker').style.display='block';document.getElementById('loadState').innerHTML=(fallback?'<b>Offline fallback:</b> the full list could not load, so a small safe list is shown.':'<b>'+available.length.toLocaleString()+' unused B2–C1 words available.</b> Search or browse the whole list.');function filtered(){const q=document.getElementById('search').value.trim().toLowerCase(),lev=document.getElementById('level').value;return available.filter(function(x){return (!q||x.word.toLowerCase().includes(q))&&(lev==='ALL'||x.level===lev)})}function draw(){const arr=filtered(),pages=Math.max(1,Math.ceil(arr.length/pageSize));if(page>=pages)page=pages-1;if(page<0)page=0;const items=arr.slice(page*pageSize,(page+1)*pageSize);document.getElementById('library').innerHTML=items.length?items.map(function(x){return '<label class="wordrow"><input class="wordcheck" type="checkbox" data-word="'+esc(x.word)+'" '+(selected.has(x.word)?'checked':'')+'><div><b>'+esc(x.word)+'</b> <button type="button" class="ghost speakBtn" data-word="'+esc(x.word)+'" data-audio="'+esc(x.audio)+'">🔊</button><div class="details">'+esc(x.pos)+'</div></div><span class="level">'+x.level+'</span></label>'}).join(''):'<p class="muted">No matching unused words.</p>';document.getElementById('pageInfo').textContent='Page '+(page+1)+' of '+pages+' · '+arr.length+' words';document.querySelectorAll('.wordcheck').forEach(function(ch){ch.onchange=function(){if(ch.checked)selected.add(ch.dataset.word);else selected.delete(ch.dataset.word);document.getElementById('selectedCount').textContent=selected.size+' selected'}});document.querySelectorAll('.speakBtn').forEach(function(b){b.onclick=function(e){speakWord(b.dataset.word,b.dataset.audio,e)}})}document.getElementById('search').oninput=function(){page=0;draw()};document.getElementById('level').onchange=function(){page=0;draw()};document.getElementById('prev').onclick=function(){page--;draw()};document.getElementById('next').onclick=function(){page++;draw()};draw();document.getElementById('saveGroup').onclick=function(){const name=document.getElementById('groupName').value.trim();if(!name||!selected.size){alert('Please name the group and choose at least one word.');return}const words=[...selected].map(function(w){const v=available.find(function(x){return x.word===w})||{word:w,level:'',pos:'',audio:''};const sample=SAMPLE.find(function(s){return s.word===w});if(sample)detailsCache[w]=sample;return {word:w,status:'active',score:0,level:v.level,pos:v.pos,audio:v.audio}});groups.push({name:name,words:words});save();renderHome()}}
+function getDetails(item,done){if(detailsCache[item.word]){done(detailsCache[item.word]);return}fetch(DICT_URL+encodeURIComponent(item.word)).then(function(r){if(!r.ok)throw new Error('dict');return r.json()}).then(function(data){const e=data[0]||{},meanings=e.meanings||[],m=meanings.find(function(z){return !item.pos||z.partOfSpeech===item.pos})||meanings[0]||{},d=(m.definitions||[])[0]||{},phon=e.phonetic||'';const obj={word:item.word,phonetic:phon,definition:d.definition||'Definition unavailable.',example:d.example||'No example sentence is available yet.',audio:item.audio||''};detailsCache[item.word]=obj;save();done(obj)}).catch(function(){const obj={word:item.word,phonetic:'',definition:'Definition unavailable right now.',example:'Example unavailable right now.',audio:item.audio||''};done(obj)})}
+function renderGroup(i){currentGroupIndex=i;const g=groups[i];let h='<div class="row"><div><h1>'+esc(g.name)+'</h1><p class="muted">'+g.words.length+' words</p></div><button class="ghost" id="homeBtn">← Groups</button></div><div class="card"><button class="primary" id="learnBtn">Learn words</button> <button class="primary" disabled>Test my knowledge</button><p class="muted">Test mode is temporarily disabled while we stabilize the vocabulary library.</p></div>';g.words.forEach(function(item){h+='<div class="card"><b>'+esc(item.word)+'</b> <span class="small">'+esc(item.level||'')+' '+esc(item.pos||'')+'</span> <button class="ghost speakBtn" data-word="'+esc(item.word)+'" data-audio="'+esc(item.audio||'')+'">🔊</button></div>'});main.innerHTML=h;document.getElementById('homeBtn').onclick=renderHome;document.getElementById('learnBtn').onclick=startLearn;document.querySelectorAll('.speakBtn').forEach(function(b){b.onclick=function(e){speakWord(b.dataset.word,b.dataset.audio,e)}})}
+function startLearn(){learnIndex=0;learnFlipped=false;renderLearn()}
+function renderLearn(){const g=groups[currentGroupIndex],active=g.words.filter(function(x){return x.status!=='mastered'});if(!active.length){alert('There are no Active words in this group.');renderGroup(currentGroupIndex);return}if(learnIndex>=active.length)learnIndex=0;const item=active[learnIndex];main.innerHTML='<div class="learnWrap"><div class="row"><h2>Learn words</h2><button class="ghost" id="backGroup">← Group</button></div><div class="card flash" id="flashCard"><div class="muted">Loading word details…</div></div><div class="counter">'+(learnIndex+1)+' of '+active.length+'</div><div class="row center"><button class="ghost" id="prevWord">← Previous</button><button class="primary" id="nextWord">Next →</button></div></div>';document.getElementById('backGroup').onclick=function(){renderGroup(currentGroupIndex)};document.getElementById('prevWord').onclick=function(){learnIndex=(learnIndex-1+active.length)%active.length;learnFlipped=false;renderLearn()};document.getElementById('nextWord').onclick=function(){learnIndex=(learnIndex+1)%active.length;learnFlipped=false;renderLearn()};getDetails(item,function(d){const card=document.getElementById('flashCard');if(!card)return;if(!learnFlipped)card.innerHTML='<div><div><span class="flashWord">'+esc(item.word)+'</span><button class="ghost speakBtn" id="learnSpeak">🔊</button></div><div class="ipa">'+esc(d.phonetic||'')+'</div><p class="muted">Tap the card to flip</p></div>';else card.innerHTML='<div><div class="meaning">'+esc(d.definition)+'</div><div class="example">'+esc(d.example)+'</div><p class="muted">Tap the card to see the word again</p></div>';card.onclick=function(){learnFlipped=!learnFlipped;renderLearn()};const sp=document.getElementById('learnSpeak');if(sp)sp.onclick=function(e){speakWord(item.word,item.audio||d.audio,e)}})}
+document.getElementById('logo').onclick=renderHome;document.getElementById('createBtn').onclick=renderCreate;if(groups.length)renderHome();
+</script></body></html>
