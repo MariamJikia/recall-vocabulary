@@ -5,21 +5,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Recall</title>
 <style>
-:root{--p:#5b5bd6;--bg:#f7f8fc;--line:#e4e7ef;--muted:#737987}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#202331}.app{max-width:950px;margin:auto;padding:28px 18px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}.logo{font-size:30px;font-weight:850}.logo span{color:var(--p)}.muted{color:var(--muted)}.card{background:white;border:1px solid var(--line);border-radius:20px;padding:20px;margin:14px 0;box-shadow:0 4px 18px #2221}.create{border:2px dashed #cfd3df;text-align:center;padding:55px 20px}.plus{font-size:45px;color:var(--p)}button{border:0;border-radius:12px;padding:11px 15px;font-weight:750;cursor:pointer}.primary{background:var(--p);color:white}.ghost{background:white;border:1px solid var(--line)}input{width:100%;padding:12px;border:1px solid #d9dce6;border-radius:12px;font:inherit;margin:8px 0 14px}.word{display:block;padding:12px 0;border-bottom:1px solid #eee}.word input{width:auto;margin-right:8px}.group{cursor:pointer}.row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}.learnWrap{max-width:680px;margin:25px auto}.flash{min-height:330px;text-align:center;display:flex;align-items:center;justify-content:center;cursor:pointer}.flashWord{font-size:42px;font-weight:850}.ipa{font-size:18px;color:var(--muted);margin-top:8px}.speakBtn{font-size:22px;padding:8px 10px;margin-left:6px;vertical-align:middle}.counter{text-align:center;color:var(--muted);margin:12px 0}.center{justify-content:center}.meaning{font-size:22px;line-height:1.5}.example{font-size:17px;color:#5f6570;margin-top:18px}
+:root{--p:#5b5bd6;--bg:#f7f8fc;--line:#e4e7ef;--muted:#737987;--ok:#16834a;--bad:#b63a3a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#202331}.app{max-width:950px;margin:auto;padding:28px 18px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}.logo{font-size:30px;font-weight:850;cursor:pointer}.logo span{color:var(--p)}.muted{color:var(--muted)}.card{background:white;border:1px solid var(--line);border-radius:20px;padding:20px;margin:14px 0;box-shadow:0 4px 18px #2221}.create{border:2px dashed #cfd3df;text-align:center;padding:55px 20px}.plus{font-size:45px;color:var(--p)}button{border:0;border-radius:12px;padding:11px 15px;font-weight:750;cursor:pointer}.primary{background:var(--p);color:white}.ghost{background:white;border:1px solid var(--line)}input,textarea{width:100%;padding:12px;border:1px solid #d9dce6;border-radius:12px;font:inherit;margin:8px 0 14px}textarea{min-height:95px}.word{display:block;padding:12px 0;border-bottom:1px solid #eee}.word input{width:auto;margin-right:8px}.group{cursor:pointer}.row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}.center{justify-content:center}.learnWrap,.testWrap{max-width:700px;margin:25px auto}.flash{min-height:330px;text-align:center;display:flex;align-items:center;justify-content:center;cursor:pointer}.flashWord{font-size:42px;font-weight:850}.ipa{font-size:18px;color:var(--muted);margin-top:8px}.speakBtn{font-size:22px;padding:8px 10px;margin-left:6px;vertical-align:middle}.counter{text-align:center;color:var(--muted);margin:12px 0}.meaning{font-size:22px;line-height:1.5}.example{font-size:17px;color:#5f6570;margin-top:18px}.tabs{display:flex;gap:8px;margin:16px 0}.tabs .on{background:var(--p);color:#fff}.score{font-weight:850;color:var(--p)}.mode{font-size:12px;font-weight:850;text-transform:uppercase;letter-spacing:.06em;color:var(--p)}.prompt{font-size:24px;line-height:1.45;text-align:center;margin:28px 0}.feedback{margin-top:14px;padding:12px;border-radius:12px;font-weight:750}.feedback.ok{background:#edf8f1;color:var(--ok)}.feedback.bad{background:#fff0f0;color:var(--bad)}.progress{height:8px;background:#eceef4;border-radius:99px;overflow:hidden;margin:14px 0}.progress div{height:100%;background:var(--p)}
 </style>
 </head>
 <body>
 <div class="app">
-  <div class="top"><div class="logo">Re<span>call</span></div><div class="muted">Vocabulary memory trainer</div></div>
-  <main id="main">
-    <div class="card create">
-      <div class="plus">＋</div>
-      <h1>Create New Group</h1>
-      <p class="muted">Choose words for your first group.</p>
-      <button class="primary" id="createBtn">Create New Group</button>
-    </div>
-  </main>
+  <div class="top"><div class="logo" id="logo">Re<span>call</span></div><div class="muted">Vocabulary memory trainer</div></div>
+  <main id="main"><div class="card create"><div class="plus">＋</div><h1>Create New Group</h1><p class="muted">Choose words for your first group.</p><button class="primary" id="createBtn">Create New Group</button></div></main>
 </div>
 <script>
 const LIB = [
@@ -36,98 +29,28 @@ const LIB = [
   ['inherent','/ɪnˈhɪrənt/','Existing as a natural or basic part of something.','Risk is inherent in the process.'],
   ['scrutinize','/ˈskruːtənaɪz/','To examine something very carefully.','The accountant scrutinized the records.']
 ];
-
-const main = document.getElementById('main');
-let groups = [];
-let currentGroupIndex = null;
-let learnIndex = 0;
-let learnFlipped = false;
-try { groups = JSON.parse(localStorage.getItem('recall_groups') || '[]'); }
-catch (e) { groups = []; }
-
-function save(){ localStorage.setItem('recall_groups', JSON.stringify(groups)); }
-function wordData(word){ return LIB.find(function(x){ return x[0] === word; }); }
-function speakWord(word, event){
-  if(event) event.stopPropagation();
-  if(!('speechSynthesis' in window)){ alert('Pronunciation playback is not supported in this browser.'); return; }
-  window.speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(word);
-  u.lang = 'en-US';
-  u.rate = 0.82;
-  window.speechSynthesis.speak(u);
-}
-
-function renderHome(){
-  currentGroupIndex = null;
-  if(!groups.length){
-    main.innerHTML = '<div class="card create"><div class="plus">＋</div><h1>Create New Group</h1><p class="muted">Choose words for your first group.</p><button class="primary" id="createBtn">Create New Group</button></div>';
-    document.getElementById('createBtn').addEventListener('click', renderCreate);
-    return;
-  }
-  let html = '<h1>Your groups</h1><p class="muted">Choose a group or create a new one.</p>';
-  groups.forEach(function(g, i){ html += '<div class="card group" data-i="'+i+'"><h2>'+g.name+'</h2><p>'+g.words.length+' words</p></div>'; });
-  html += '<div class="card create"><div class="plus">＋</div><h2>Create New Group</h2><button class="primary" id="createBtn">Create New Group</button></div>';
-  main.innerHTML = html;
-  document.getElementById('createBtn').addEventListener('click', renderCreate);
-  document.querySelectorAll('.group').forEach(function(el){ el.addEventListener('click', function(){ renderGroup(Number(el.dataset.i)); }); });
-}
-
-function renderCreate(){
-  let html = '<div class="row"><h1>Create New Group</h1><button class="ghost" id="homeBtn">← Home</button></div><div class="card"><label>Group name</label><input id="groupName" placeholder="September Week 1"><h3>＋ Choose words</h3>';
-  LIB.forEach(function(w, i){ html += '<label class="word"><input type="checkbox" value="'+i+'"><b>'+w[0]+'</b> '+w[1]+'<br><span class="muted">'+w[2]+'</span></label>'; });
-  html += '<button class="primary" id="saveGroup">Create Group</button></div>';
-  main.innerHTML = html;
-  document.getElementById('homeBtn').addEventListener('click', renderHome);
-  document.getElementById('saveGroup').addEventListener('click', function(){
-    const name = document.getElementById('groupName').value.trim();
-    const chosen = Array.from(document.querySelectorAll('.word input:checked')).map(function(x){ return LIB[Number(x.value)][0]; });
-    if(!name || !chosen.length){ alert('Please name the group and choose at least one word.'); return; }
-    groups.push({name:name, words:chosen.map(function(w){return {word:w,status:'active',score:0};})});
-    save(); renderHome();
-  });
-}
-
-function renderGroup(i){
-  currentGroupIndex = i;
-  const g = groups[i];
-  let html = '<div class="row"><div><h1>'+g.name+'</h1><p class="muted">'+g.words.length+' words</p></div><button class="ghost" id="homeBtn">← Groups</button></div><div class="card"><button class="primary" id="learnBtn">Learn words</button> <button class="primary" disabled>Test my knowledge</button><p class="muted">Learning mode is active. The full test engine will be restored next.</p></div>';
-  g.words.forEach(function(item){ const w=wordData(item.word); html += '<div class="card"><b>'+item.word+'</b> '+(w?w[1]:'')+' <button class="ghost speakBtn" data-word="'+item.word+'" title="Hear pronunciation">🔊</button><p class="muted">'+(w?w[2]:'')+'</p></div>'; });
-  main.innerHTML = html;
-  document.getElementById('homeBtn').addEventListener('click', renderHome);
-  document.getElementById('learnBtn').addEventListener('click', startLearn);
-  document.querySelectorAll('.speakBtn').forEach(function(btn){ btn.addEventListener('click', function(e){ speakWord(btn.dataset.word, e); }); });
-}
-
-function startLearn(){
-  learnIndex = 0;
-  learnFlipped = false;
-  renderLearn();
-}
-
-function renderLearn(){
-  const g = groups[currentGroupIndex];
-  const active = g.words.filter(function(x){ return x.status !== 'mastered'; });
-  if(!active.length){ alert('There are no Active words in this group.'); renderGroup(currentGroupIndex); return; }
-  if(learnIndex >= active.length) learnIndex = 0;
-  const item = active[learnIndex];
-  const w = wordData(item.word);
-  let card;
-  if(!learnFlipped){
-    card = '<div><div><span class="flashWord">'+w[0]+'</span><button class="ghost speakBtn" id="learnSpeak" title="Hear pronunciation">🔊</button></div><div class="ipa">'+w[1]+'</div><p class="muted">Tap the card to flip</p></div>';
-  } else {
-    card = '<div><div class="meaning">'+w[2]+'</div><div class="example">'+w[3]+'</div><p class="muted">Tap the card to see the word again</p></div>';
-  }
-  main.innerHTML = '<div class="learnWrap"><div class="row"><h2>Learn words</h2><button class="ghost" id="backGroup">← Group</button></div><div class="card flash" id="flashCard">'+card+'</div><div class="counter">'+(learnIndex+1)+' of '+active.length+'</div><div class="row center"><button class="ghost" id="prevWord">← Previous</button><button class="primary" id="nextWord">Next →</button></div></div>';
-  document.getElementById('backGroup').addEventListener('click', function(){ renderGroup(currentGroupIndex); });
-  document.getElementById('flashCard').addEventListener('click', function(){ learnFlipped = !learnFlipped; renderLearn(); });
-  const sp = document.getElementById('learnSpeak');
-  if(sp) sp.addEventListener('click', function(e){ speakWord(w[0], e); });
-  document.getElementById('prevWord').addEventListener('click', function(){ learnIndex = (learnIndex - 1 + active.length) % active.length; learnFlipped = false; renderLearn(); });
-  document.getElementById('nextWord').addEventListener('click', function(){ learnIndex = (learnIndex + 1) % active.length; learnFlipped = false; renderLearn(); });
-}
-
-document.getElementById('createBtn').addEventListener('click', renderCreate);
-if(groups.length) renderHome();
+const main=document.getElementById('main');
+let groups=[];try{groups=JSON.parse(localStorage.getItem('recall_groups')||'[]')}catch(e){groups=[]}
+let currentGroupIndex=null,tab='active',learnIndex=0,learnFlipped=false,session=[],qi=0,scores={},locked=false;
+function save(){localStorage.setItem('recall_groups',JSON.stringify(groups))}
+function wordData(word){return LIB.find(function(x){return x[0]===word})}
+function activeWords(g){return g.words.filter(function(x){return x.status!=='mastered'})}
+function masteredWords(g){return g.words.filter(function(x){return x.status==='mastered'})}
+function normalize(s){return String(s||'').trim().toLowerCase().replace(/\s+/g,' ')}
+function speakWord(word,event){if(event)event.stopPropagation();if(!('speechSynthesis'in window)){alert('Pronunciation playback is not supported in this browser.');return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(word);u.lang='en-US';u.rate=.82;speechSynthesis.speak(u)}
+function renderHome(){currentGroupIndex=null;if(!groups.length){main.innerHTML='<div class="card create"><div class="plus">＋</div><h1>Create New Group</h1><p class="muted">Choose words for your first group.</p><button class="primary" id="createBtn">Create New Group</button></div>';document.getElementById('createBtn').onclick=renderCreate;return}let html='<h1>Your groups</h1><p class="muted">Choose a group or create a new one.</p>';groups.forEach(function(g,i){html+='<div class="card group" data-i="'+i+'"><h2>'+g.name+'</h2><p>'+g.words.length+' words · '+activeWords(g).length+' Active · '+masteredWords(g).length+' Mastered</p></div>'});html+='<div class="card create"><div class="plus">＋</div><h2>Create New Group</h2><button class="primary" id="createBtn">Create New Group</button></div>';main.innerHTML=html;document.getElementById('createBtn').onclick=renderCreate;document.querySelectorAll('.group').forEach(function(el){el.onclick=function(){renderGroup(Number(el.dataset.i))}})}
+function renderCreate(){let html='<div class="row"><h1>Create New Group</h1><button class="ghost" id="homeBtn">← Home</button></div><div class="card"><label>Group name</label><input id="groupName" placeholder="September Week 1"><h3>＋ Choose words</h3>';LIB.forEach(function(w,i){html+='<label class="word"><input type="checkbox" value="'+i+'"><b>'+w[0]+'</b> '+w[1]+'<br><span class="muted">'+w[2]+'</span></label>'});html+='<button class="primary" id="saveGroup">Create Group</button></div>';main.innerHTML=html;document.getElementById('homeBtn').onclick=renderHome;document.getElementById('saveGroup').onclick=function(){const name=document.getElementById('groupName').value.trim();const chosen=Array.from(document.querySelectorAll('.word input:checked')).map(function(x){return LIB[Number(x.value)][0]});if(!name||!chosen.length){alert('Please name the group and choose at least one word.');return}groups.push({name:name,words:chosen.map(function(w){return{word:w,status:'active',score:0}})});save();renderHome()}}
+function renderGroup(i){currentGroupIndex=i;const g=groups[i];const list=tab==='mastered'?masteredWords(g):activeWords(g);let html='<div class="row"><div><h1>'+g.name+'</h1><p class="muted">'+activeWords(g).length+' Active · '+masteredWords(g).length+' Mastered</p></div><button class="ghost" id="homeBtn">← Groups</button></div><div class="card"><button class="primary" id="learnBtn">Learn words</button> <button class="primary" id="testBtn">Test my knowledge</button></div><div class="tabs"><button id="activeTab" class="'+(tab==='active'?'on':'ghost')+'">Active</button><button id="masteredTab" class="'+(tab==='mastered'?'on':'ghost')+'">Mastered</button></div><div class="card">';if(!list.length)html+='<p class="muted">No words here.</p>';list.forEach(function(item){const w=wordData(item.word);html+='<div class="word row"><div><b>'+item.word+'</b> '+(w?w[1]:'')+' <button class="ghost speakBtn" data-word="'+item.word+'">🔊</button><div class="muted">'+(w?w[2]:'')+'</div></div><div><span class="score">'+(item.score||0)+'/7</span> <button class="ghost moveBtn" data-word="'+item.word+'">Move to '+(tab==='active'?'Mastered':'Active')+'</button></div></div>'});html+='</div>';main.innerHTML=html;document.getElementById('homeBtn').onclick=renderHome;document.getElementById('learnBtn').onclick=startLearn;document.getElementById('testBtn').onclick=startTest;document.getElementById('activeTab').onclick=function(){tab='active';renderGroup(i)};document.getElementById('masteredTab').onclick=function(){tab='mastered';renderGroup(i)};document.querySelectorAll('.speakBtn').forEach(function(b){b.onclick=function(e){speakWord(b.dataset.word,e)}});document.querySelectorAll('.moveBtn').forEach(function(b){b.onclick=function(){const item=g.words.find(function(x){return x.word===b.dataset.word});if(item.status==='mastered'){item.status='active';item.score=0}else{item.status='mastered';item.score=7}save();renderGroup(i)}})}
+function startLearn(){learnIndex=0;learnFlipped=false;renderLearn()}
+function renderLearn(){const g=groups[currentGroupIndex],a=activeWords(g);if(!a.length){alert('There are no Active words in this group.');renderGroup(currentGroupIndex);return}if(learnIndex>=a.length)learnIndex=0;const w=wordData(a[learnIndex].word);const card=!learnFlipped?'<div><div><span class="flashWord">'+w[0]+'</span><button class="ghost speakBtn" id="learnSpeak">🔊</button></div><div class="ipa">'+w[1]+'</div><p class="muted">Tap the card to flip</p></div>':'<div><div class="meaning">'+w[2]+'</div><div class="example">'+w[3]+'</div><p class="muted">Tap the card to see the word again</p></div>';main.innerHTML='<div class="learnWrap"><div class="row"><h2>Learn words</h2><button class="ghost" id="backGroup">← Group</button></div><div class="card flash" id="flashCard">'+card+'</div><div class="counter">'+(learnIndex+1)+' of '+a.length+'</div><div class="row center"><button class="ghost" id="prevWord">← Previous</button><button class="primary" id="nextWord">Next →</button></div></div>';document.getElementById('backGroup').onclick=function(){renderGroup(currentGroupIndex)};document.getElementById('flashCard').onclick=function(){learnFlipped=!learnFlipped;renderLearn()};const sp=document.getElementById('learnSpeak');if(sp)sp.onclick=function(e){speakWord(w[0],e)};document.getElementById('prevWord').onclick=function(){learnIndex=(learnIndex-1+a.length)%a.length;learnFlipped=false;renderLearn()};document.getElementById('nextWord').onclick=function(){learnIndex=(learnIndex+1)%a.length;learnFlipped=false;renderLearn()}}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));const t=a[i];a[i]=a[j];a[j]=t}}
+function startTest(){const a=activeWords(groups[currentGroupIndex]);if(!a.length){alert('There are no Active words to test.');return}session=[];scores={};a.forEach(function(item){scores[item.word]=0;['definition1','gap1','listen','definition2','gap2','speak','sentence'].forEach(function(type){session.push({word:item.word,type:type})})});shuffle(session);qi=0;locked=false;renderQuestion()}
+function renderQuestion(){if(qi>=session.length){finishTest();return}locked=false;const q=session[qi],w=wordData(q.word);let mode='',prompt='',answerBox='';if(q.type==='definition1'||q.type==='definition2'){mode='Description → type the word';prompt=w[2];answerBox=typedBox()}if(q.type==='gap1'||q.type==='gap2'){mode='Sentence → type the missing word';prompt=w[3].replace(new RegExp('\\b'+w[0]+'\\b','i'),'__________');answerBox=typedBox()}if(q.type==='listen'){mode='Listen → type the word';prompt='<button class="primary" id="playWord">🔊 Play word</button>';answerBox=typedBox()}if(q.type==='speak'){mode='Description → pronounce the word';prompt=w[2];answerBox='<div class="row center"><button class="primary" id="speakAnswer">🎤 Speak</button><button class="ghost" id="dontKnow">I don\'t know</button></div><p class="muted">A clearly understandable foreign accent is okay.</p>'}if(q.type==='sentence'){mode='Use the word in a sentence';prompt='<b>'+w[0]+'</b>';answerBox='<textarea id="sentenceAnswer" placeholder="Write a natural sentence using this word."></textarea><div class="row center"><button class="primary" id="checkSentence">Check</button><button class="ghost" id="dontKnow">I don\'t know</button></div>'}main.innerHTML='<div class="testWrap"><div class="row"><div><div class="mode">'+mode+'</div><div class="muted">'+(qi+1)+' of '+session.length+'</div></div><button class="ghost" id="endTest">End test</button></div><div class="progress"><div style="width:'+((qi/session.length)*100)+'%"></div></div><div class="card"><div class="prompt">'+prompt+'</div>'+answerBox+'<div id="feedback"></div><div id="nextWrap" class="center" style="display:none;margin-top:14px"><button class="primary" id="nextQuestion">Next</button></div></div></div>';document.getElementById('endTest').onclick=function(){renderGroup(currentGroupIndex)};const a=document.getElementById('answerInput');if(a){a.focus();a.onkeydown=function(e){if(e.key==='Enter'){e.preventDefault();grade(normalize(a.value)===normalize(q.word))}}}const d=document.getElementById('dontKnow');if(d)d.onclick=function(){grade(false)};const p=document.getElementById('playWord');if(p)p.onclick=function(){speakWord(w[0])};const s=document.getElementById('checkSentence');if(s)s.onclick=function(){const text=document.getElementById('sentenceAnswer').value.trim();const has=new RegExp('\\b'+w[0]+'\\b','i').test(text);grade(has&&text.split(/\s+/).length>=5)};const sr=document.getElementById('speakAnswer');if(sr)sr.onclick=function(){recognizeWord(w[0])}}
+function typedBox(){return '<input id="answerInput" autocomplete="off" placeholder="Type your answer"><p class="muted">Press ENTER to check</p><div class="row center"><button class="ghost" id="dontKnow">I don\'t know</button></div>'}
+function grade(ok){if(locked)return;locked=true;const q=session[qi],w=wordData(q.word);if(ok)scores[q.word]++;document.getElementById('feedback').innerHTML='<div class="feedback '+(ok?'ok':'bad')+'">'+(ok?'✓ Correct':'✕ Answer: '+w[0])+'<div class="muted" style="margin-top:5px">'+w[2]+'</div></div>';const next=document.getElementById('nextWrap');next.style.display='flex';document.getElementById('nextQuestion').onclick=function(){qi++;renderQuestion()}}
+function recognizeWord(target){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){alert('Speech recognition works best in Chrome or Edge.');return}const r=new SR();r.lang='en-US';r.maxAlternatives=5;r.interimResults=false;r.onresult=function(e){let ok=false;for(let i=0;i<e.results[0].length;i++){const heard=normalize(e.results[0][i].transcript);if(heard===normalize(target)||heard.split(' ').includes(normalize(target)))ok=true}grade(ok)};r.onerror=function(){alert('I could not understand that. Please try again or choose I don\'t know.')} ;r.start()}
+function finishTest(){const g=groups[currentGroupIndex];g.words.forEach(function(item){if(scores[item.word]!==undefined){item.score=scores[item.word];item.status=item.score===7?'mastered':'active'}});save();const mastered=Object.keys(scores).filter(function(w){return scores[w]===7}).length;main.innerHTML='<div class="testWrap"><div class="card" style="text-align:center"><h1>Test complete</h1><p><b>'+mastered+'</b> word(s) reached 7/7 and moved to Mastered.</p><p class="muted">Anything below 7/7 stays Active.</p><button class="primary" id="backAfterTest">Back to group</button></div></div>';document.getElementById('backAfterTest').onclick=function(){tab='active';renderGroup(currentGroupIndex)}}
+document.getElementById('logo').onclick=renderHome;document.getElementById('createBtn').onclick=renderCreate;if(groups.length)renderHome();
 </script>
 </body>
 </html>
