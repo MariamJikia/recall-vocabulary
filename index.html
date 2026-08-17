@@ -6,7 +6,7 @@
 <title>Recall</title>
 <style>
 :root{--p:#5b5bd6;--bg:#f7f8fc;--line:#e4e7ef;--muted:#737987}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#202331}.app{max-width:950px;margin:auto;padding:28px 18px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}.logo{font-size:30px;font-weight:850}.logo span{color:var(--p)}.muted{color:var(--muted)}.card{background:white;border:1px solid var(--line);border-radius:20px;padding:20px;margin:14px 0;box-shadow:0 4px 18px #2221}.create{border:2px dashed #cfd3df;text-align:center;padding:55px 20px}.plus{font-size:45px;color:var(--p)}button{border:0;border-radius:12px;padding:11px 15px;font-weight:750;cursor:pointer}.primary{background:var(--p);color:white}.ghost{background:white;border:1px solid var(--line)}input{width:100%;padding:12px;border:1px solid #d9dce6;border-radius:12px;font:inherit;margin:8px 0 14px}.word{display:block;padding:12px 0;border-bottom:1px solid #eee}.word input{width:auto;margin-right:8px}.group{cursor:pointer}.row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#202331}.app{max-width:950px;margin:auto;padding:28px 18px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}.logo{font-size:30px;font-weight:850}.logo span{color:var(--p)}.muted{color:var(--muted)}.card{background:white;border:1px solid var(--line);border-radius:20px;padding:20px;margin:14px 0;box-shadow:0 4px 18px #2221}.create{border:2px dashed #cfd3df;text-align:center;padding:55px 20px}.plus{font-size:45px;color:var(--p)}button{border:0;border-radius:12px;padding:11px 15px;font-weight:750;cursor:pointer}.primary{background:var(--p);color:white}.ghost{background:white;border:1px solid var(--line)}input{width:100%;padding:12px;border:1px solid #d9dce6;border-radius:12px;font:inherit;margin:8px 0 14px}.word{display:block;padding:12px 0;border-bottom:1px solid #eee}.word input{width:auto;margin-right:8px}.group{cursor:pointer}.row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}.learnWrap{max-width:680px;margin:25px auto}.flash{min-height:330px;text-align:center;display:flex;align-items:center;justify-content:center;cursor:pointer}.flashWord{font-size:42px;font-weight:850}.ipa{font-size:18px;color:var(--muted);margin-top:8px}.speakBtn{font-size:22px;padding:8px 10px;margin-left:6px;vertical-align:middle}.counter{text-align:center;color:var(--muted);margin:12px 0}.center{justify-content:center}.meaning{font-size:22px;line-height:1.5}.example{font-size:17px;color:#5f6570;margin-top:18px}
 </style>
 </head>
 <body>
@@ -23,27 +23,42 @@
 </div>
 <script>
 const LIB = [
-  ['reluctant','/rɪˈlʌktənt/','Not willing or eager to do something; hesitant.'],
-  ['acknowledge','/əkˈnɑːlɪdʒ/','To accept, admit, or recognize that something is true or exists.'],
-  ['subtle','/ˈsʌtəl/','Not obvious or easy to notice.'],
-  ['inevitable','/ɪnˈevɪtəbəl/','Certain to happen and impossible to avoid.'],
-  ['convey','/kənˈveɪ/','To communicate or express an idea, feeling, or message.'],
-  ['ambiguous','/æmˈbɪɡjuəs/','Having more than one possible meaning; unclear.'],
-  ['coherent','/koʊˈhɪrənt/','Logical, clear, and consistent.'],
-  ['deteriorate','/dɪˈtɪriəreɪt/','To become progressively worse.'],
-  ['elaborate','/ɪˈlæbərət/','Detailed and complicated in design or planning.'],
-  ['feasible','/ˈfiːzəbəl/','Possible and practical to do successfully.'],
-  ['inherent','/ɪnˈhɪrənt/','Existing as a natural or basic part of something.'],
-  ['scrutinize','/ˈskruːtənaɪz/','To examine something very carefully.']
+  ['reluctant','/rɪˈlʌktənt/','Not willing or eager to do something; hesitant.','She was reluctant to discuss what happened.'],
+  ['acknowledge','/əkˈnɑːlɪdʒ/','To accept, admit, or recognize that something is true or exists.','He acknowledged that the project took longer than expected.'],
+  ['subtle','/ˈsʌtəl/','Not obvious or easy to notice.','There was a subtle change in her tone.'],
+  ['inevitable','/ɪnˈevɪtəbəl/','Certain to happen and impossible to avoid.','Some delays were inevitable.'],
+  ['convey','/kənˈveɪ/','To communicate or express an idea, feeling, or message.','Her expression conveyed disappointment.'],
+  ['ambiguous','/æmˈbɪɡjuəs/','Having more than one possible meaning; unclear.','The instructions were deliberately ambiguous.'],
+  ['coherent','/koʊˈhɪrənt/','Logical, clear, and consistent.','She gave a coherent explanation.'],
+  ['deteriorate','/dɪˈtɪriəreɪt/','To become progressively worse.','The weather began to deteriorate.'],
+  ['elaborate','/ɪˈlæbərət/','Detailed and complicated in design or planning.','They prepared an elaborate presentation.'],
+  ['feasible','/ˈfiːzəbəl/','Possible and practical to do successfully.','The committee decided the plan was feasible.'],
+  ['inherent','/ɪnˈhɪrənt/','Existing as a natural or basic part of something.','Risk is inherent in the process.'],
+  ['scrutinize','/ˈskruːtənaɪz/','To examine something very carefully.','The accountant scrutinized the records.']
 ];
 
 const main = document.getElementById('main');
 let groups = [];
+let currentGroupIndex = null;
+let learnIndex = 0;
+let learnFlipped = false;
 try { groups = JSON.parse(localStorage.getItem('recall_groups') || '[]'); }
 catch (e) { groups = []; }
 
 function save(){ localStorage.setItem('recall_groups', JSON.stringify(groups)); }
+function wordData(word){ return LIB.find(function(x){ return x[0] === word; }); }
+function speakWord(word, event){
+  if(event) event.stopPropagation();
+  if(!('speechSynthesis' in window)){ alert('Pronunciation playback is not supported in this browser.'); return; }
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(word);
+  u.lang = 'en-US';
+  u.rate = 0.82;
+  window.speechSynthesis.speak(u);
+}
+
 function renderHome(){
+  currentGroupIndex = null;
   if(!groups.length){
     main.innerHTML = '<div class="card create"><div class="plus">＋</div><h1>Create New Group</h1><p class="muted">Choose words for your first group.</p><button class="primary" id="createBtn">Create New Group</button></div>';
     document.getElementById('createBtn').addEventListener('click', renderCreate);
@@ -73,11 +88,42 @@ function renderCreate(){
 }
 
 function renderGroup(i){
+  currentGroupIndex = i;
   const g = groups[i];
-  let html = '<div class="row"><div><h1>'+g.name+'</h1><p class="muted">'+g.words.length+' words</p></div><button class="ghost" id="homeBtn">← Groups</button></div><div class="card"><button class="primary" disabled>Learn words</button> <button class="primary" disabled>Test my knowledge</button><p class="muted">The group flow is working. The full learn/test engine will be restored next.</p></div>';
-  g.words.forEach(function(item){ const w=LIB.find(function(x){return x[0]===item.word;}); html += '<div class="card"><b>'+item.word+'</b> '+(w?w[1]:'')+'<p class="muted">'+(w?w[2]:'')+'</p></div>'; });
+  let html = '<div class="row"><div><h1>'+g.name+'</h1><p class="muted">'+g.words.length+' words</p></div><button class="ghost" id="homeBtn">← Groups</button></div><div class="card"><button class="primary" id="learnBtn">Learn words</button> <button class="primary" disabled>Test my knowledge</button><p class="muted">Learning mode is active. The full test engine will be restored next.</p></div>';
+  g.words.forEach(function(item){ const w=wordData(item.word); html += '<div class="card"><b>'+item.word+'</b> '+(w?w[1]:'')+' <button class="ghost speakBtn" data-word="'+item.word+'" title="Hear pronunciation">🔊</button><p class="muted">'+(w?w[2]:'')+'</p></div>'; });
   main.innerHTML = html;
   document.getElementById('homeBtn').addEventListener('click', renderHome);
+  document.getElementById('learnBtn').addEventListener('click', startLearn);
+  document.querySelectorAll('.speakBtn').forEach(function(btn){ btn.addEventListener('click', function(e){ speakWord(btn.dataset.word, e); }); });
+}
+
+function startLearn(){
+  learnIndex = 0;
+  learnFlipped = false;
+  renderLearn();
+}
+
+function renderLearn(){
+  const g = groups[currentGroupIndex];
+  const active = g.words.filter(function(x){ return x.status !== 'mastered'; });
+  if(!active.length){ alert('There are no Active words in this group.'); renderGroup(currentGroupIndex); return; }
+  if(learnIndex >= active.length) learnIndex = 0;
+  const item = active[learnIndex];
+  const w = wordData(item.word);
+  let card;
+  if(!learnFlipped){
+    card = '<div><div><span class="flashWord">'+w[0]+'</span><button class="ghost speakBtn" id="learnSpeak" title="Hear pronunciation">🔊</button></div><div class="ipa">'+w[1]+'</div><p class="muted">Tap the card to flip</p></div>';
+  } else {
+    card = '<div><div class="meaning">'+w[2]+'</div><div class="example">'+w[3]+'</div><p class="muted">Tap the card to see the word again</p></div>';
+  }
+  main.innerHTML = '<div class="learnWrap"><div class="row"><h2>Learn words</h2><button class="ghost" id="backGroup">← Group</button></div><div class="card flash" id="flashCard">'+card+'</div><div class="counter">'+(learnIndex+1)+' of '+active.length+'</div><div class="row center"><button class="ghost" id="prevWord">← Previous</button><button class="primary" id="nextWord">Next →</button></div></div>';
+  document.getElementById('backGroup').addEventListener('click', function(){ renderGroup(currentGroupIndex); });
+  document.getElementById('flashCard').addEventListener('click', function(){ learnFlipped = !learnFlipped; renderLearn(); });
+  const sp = document.getElementById('learnSpeak');
+  if(sp) sp.addEventListener('click', function(e){ speakWord(w[0], e); });
+  document.getElementById('prevWord').addEventListener('click', function(){ learnIndex = (learnIndex - 1 + active.length) % active.length; learnFlipped = false; renderLearn(); });
+  document.getElementById('nextWord').addEventListener('click', function(){ learnIndex = (learnIndex + 1) % active.length; learnFlipped = false; renderLearn(); });
 }
 
 document.getElementById('createBtn').addEventListener('click', renderCreate);
